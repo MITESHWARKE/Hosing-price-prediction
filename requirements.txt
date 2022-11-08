@@ -3,3 +3,5 @@ gunicorn
 sklearn
 pandas
 numpy
+-e . # its going to search for all the packages in the current directory('.' -> current dir)
+     # and its going to install the above requiremnts in that directory as well
