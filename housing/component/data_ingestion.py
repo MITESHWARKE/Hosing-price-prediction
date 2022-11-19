@@ -2,7 +2,10 @@ import os, sys
 import tarfile
 import numpy as np
 import pandas as pd
-from six.moves import urllib
+from urllib.request import urlretrieve
+import urllib
+import six
+#from six.moves import urllib
 from sklearn.model_selection import StratifiedShuffleSplit
 
 from housing.entity.artifact_entity import DataIngestionArtifact
@@ -118,7 +121,7 @@ class DataIngestion:
             tgz_file_path = self.download_housing_data()
 
             self.extract_tgz_file(tgz_file_path=tgz_file_path)
-            return self.split_data_as_train_test
+            #return self.split_data_as_train_test
             
         except Exception as e:
             raise HousingException(e,sys) from e            
