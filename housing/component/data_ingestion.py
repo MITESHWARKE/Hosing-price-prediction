@@ -7,7 +7,7 @@ import urllib
 import six
 #from six.moves import urllib
 from sklearn.model_selection import StratifiedShuffleSplit
-
+import urllib.request
 from housing.entity.artifact_entity import DataIngestionArtifact
 from housing.entity.config_entity import DataIngestionConfig
 from housing.exception import HousingException
@@ -40,6 +40,7 @@ class DataIngestion:
 
             tgz_file_path = os.path.join(tgz_download_dir, housing_file_name)
             logging.info(f"Downloading file from :[{download_url}] into :[{tgz_file_path}]")
+            #urllib.request.urlretrieve(download_url, tgz_file_path)
             urllib.request.urlretrieve(download_url, tgz_file_path)
             logging.info(f"File :[{tgz_file_path}] has been downloaded successfully.")
             return tgz_file_path
@@ -121,7 +122,7 @@ class DataIngestion:
             tgz_file_path = self.download_housing_data()
 
             self.extract_tgz_file(tgz_file_path=tgz_file_path)
-            #return self.split_data_as_train_test
+            return self.split_data_as_train_test
             
         except Exception as e:
             raise HousingException(e,sys) from e            
