@@ -2,12 +2,12 @@ import os, sys
 import tarfile
 import numpy as np
 import pandas as pd
-from urllib.request import urlretrieve
+#from urllib.request import urlretrieve
 import urllib
-import six
-#from six.moves import urllib
+#import six
+from six.moves import urllib
 from sklearn.model_selection import StratifiedShuffleSplit
-import urllib.request
+#import urllib.request
 from housing.entity.artifact_entity import DataIngestionArtifact
 from housing.entity.config_entity import DataIngestionConfig
 from housing.exception import HousingException
@@ -18,7 +18,7 @@ class DataIngestion:
 
     def __init__(self,data_ingestion_config:DataIngestionConfig ):
         try:
-            logging.info(f"{'='*20}Data Ingestion log started.{'='*20} ")
+            logging.info(f"{'>>'*20}Data Ingestion log started.{'<<'*20} ")
             self.data_ingestion_config = data_ingestion_config
         except Exception as e:
             raise HousingException(e,sys)
@@ -30,10 +30,10 @@ class DataIngestion:
 
             #folder location to download file
             tgz_download_dir = self.data_ingestion_config.tgz_download_dir
-
+            '''
             if os.path.exists(tgz_download_dir):
                 os.remove(tgz_download_dir)
-
+            '''
             os.makedirs(tgz_download_dir,exist_ok=True)
 
             housing_file_name = os.path.basename(download_url)
@@ -85,6 +85,7 @@ class DataIngestion:
             logging.info(f"Splitting data into train and test")
             strat_train_set = None
             strat_test_set = None
+
             split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
 
             for train_index,test_index in split.split(housing_data_frame, housing_data_frame["income_cat"]):
@@ -120,15 +121,12 @@ class DataIngestion:
     def initiate_data_ingestion(self)-> DataIngestionArtifact:
         try:
             tgz_file_path = self.download_housing_data()
-
             self.extract_tgz_file(tgz_file_path=tgz_file_path)
-            return self.split_data_as_train_test
+            return self.split_data_as_train_test()
             
         except Exception as e:
             raise HousingException(e,sys) from e            
 
-
-
     def __del__(self):
-        logging.info(f"{'='*20}Data Ingestion log completed.{'='*20} \n\n")
+        logging.info(f"{'>>'*20}Data Ingestion log completed.{'<<'*20} \n\n")
                 
